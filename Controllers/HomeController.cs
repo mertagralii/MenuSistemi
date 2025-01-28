@@ -1,4 +1,6 @@
+using System.Data;
 using System.Diagnostics;
+using Dapper;
 using MenuSistemi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,19 +8,43 @@ namespace MenuSistemi.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IDbConnection _connection;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IDbConnection connection)
         {
-            _logger = logger;
+                _connection = connection;
         }
-
         public IActionResult Index()
         {
-            return View();
+            var categoryList = _connection.Query<TBLCategory>("SELECT * FROM TBLCategory").ToList();
+            var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
+            // var urunSayisi = 
+            var viewModel = new MenuWithCategory()
+            {
+                
+                Category = categoryList,
+                MenuLeftJoin = menuLeftJoin
+                
+            }; 
+
+            return View(viewModel);
         }
 
-       
-        
+        public IActionResult Editor() 
+        {
+            var categoryList = _connection.Query<TBLCategory>("SELECT * FROM TBLCategory").ToList();
+            var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
+            var viewModel = new MenuWithCategory()
+            {
+
+                Category = categoryList,
+                MenuLeftJoin = menuLeftJoin
+
+            };
+            return View(viewModel);
+        }
+
+
+
     }
 }

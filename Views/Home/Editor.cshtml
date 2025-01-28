@@ -1,0 +1,31 @@
+﻿@model MenuWithCategory
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<h2>Kategori Listesi</h2>
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+   
+        @foreach (var category in Model.Category)
+        {
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-@category.CategoryName" aria-expanded="false" aria-controls="flush-@category.CategoryName">
+                    @category.CategoryName
+                </button>
+            </h2>
+            <div id="flush-@category.CategoryName" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <a href="#" class="btn btn-primary">Güncelle</a>
+                    <a href="#" class="btn btn-danger">Sil</a>
+                    <a href="#" class="btn btn-warning">Ürünleri Yönet</a>
+                </div>
+            </div>
+        </div>
+        }
+</div>   
+
+

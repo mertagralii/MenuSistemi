@@ -1,4 +1,8 @@
-namespace MenuSistemi
+using Microsoft.AspNetCore.Connections;
+using Microsoft.Data.SqlClient;
+using System.Data;
+
+namespace MyPortfolio
 {
     public class Program
     {
@@ -8,6 +12,13 @@ namespace MenuSistemi
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddTransient<IDbConnection>(ServiceProvider =>
+            {
+                var configuration = ServiceProvider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                return new SqlConnection(connectionString);
+            });
 
             var app = builder.Build();
 
