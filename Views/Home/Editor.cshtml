@@ -7,7 +7,30 @@
 
 <h2>Kategori Listesi</h2>
 
-<div class="accordion accordion-flush" id="accordionFlushExample">
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item ">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#CategoryEkle" aria-expanded="true" aria-controls="CategoryEkle">
+               Kategori Ekle
+            </button>
+        </h2>
+        <div id="CategoryEkle" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form action="/Home/AddCategory" method="post" autocomplete="off">
+                    <div class="mb-3">
+                        <label for="CategoryName" class="form-label">Kategori Adı</label>
+                        <input type="text" class="form-control" id="CategoryName" name="CategoryName" aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="mt-5">Kategoriler</h2>
+<div class="accordion mt-5 accordion-flush" id="accordionFlushExample">
    
         @foreach (var category in Model.Category)
         {
@@ -19,9 +42,9 @@
             </h2>
             <div id="flush-@category.CategoryName" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <a href="#" class="btn btn-primary">Güncelle</a>
-                    <a href="#" class="btn btn-danger">Sil</a>
-                    <a href="#" class="btn btn-warning">Ürünleri Yönet</a>
+                    <a href="/Admin/UpdateCategory/@category.Id" class="btn btn-primary">Güncelle</a>
+                    <a href="/Admin/DeleteCategory/@category.Id" class="btn btn-danger">Sil</a>
+                    <a href="/Admin/ProductmManage/@category.Id" class="btn btn-warning">Ürünleri Yönet</a>
                 </div>
             </div>
         </div>

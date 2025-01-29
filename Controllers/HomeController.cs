@@ -14,7 +14,7 @@ namespace MenuSistemi.Controllers
         {
                 _connection = connection;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? Id)
         {
             var categoryList = _connection.Query<TBLCategory>("SELECT * FROM TBLCategory").ToList();
             var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
@@ -42,6 +42,19 @@ namespace MenuSistemi.Controllers
 
             };
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddCategory(TBLCategory category) 
+        {
+            var addCategory = _connection.Execute
+                (
+                  @"INSERT INTO TBLCategory
+                    (CategoryName)
+                    VALUES
+                    (@CategoryName)", category
+                );
+            return RedirectToAction("Editor");
         }
 
 
