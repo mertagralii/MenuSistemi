@@ -120,6 +120,28 @@ namespace MenuSistemi.Controllers
             return RedirectToAction("Index"); 
         }
 
+        [HttpGet]
+        public IActionResult UpdateProductManager(int Id) 
+        {
+            var selectUpdateProduct = _connection.QueryFirstOrDefault<TBLMenu>("SELECT * FROM TBLMenu WHERE MenuId = @Id", new {Id = Id});
+
+            return View(selectUpdateProduct);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProductManager(TBLMenu menu) 
+        {
+            var updateProduct = _connection.Execute
+             (
+                @"UPDATE TBLMenu
+                   SET
+                  FoodName = @FoodName,FoodPrice = @FoodPrice,FoodImageUrl = @FoodImageUrl
+                  WHERE MenuId = @MenuId", menu
+             );
+            return RedirectToAction("Editor");
+        }
+
+
 
 
     }

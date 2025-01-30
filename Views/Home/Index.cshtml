@@ -12,7 +12,7 @@
     
     @foreach (var category in Model.Category)
     {
-        var menuCount = Model.MenuCount.FirstOrDefault(m => m.CategoryId == category.Id)?.MenuSayisi ?? 0; // SORULUCAK (HER CATEGORİYE AİT MENÜ SAYISI GETİRİYOR)
+        var menuCount = Model.MenuCount.FirstOrDefault(m => m.CategoryId == category.Id)?.MenuSayisi ?? 0;  // SORULUCAK (HER CATEGORİYE AİT MENÜ SAYISI GETİRİYOR)
 
         <div class="accordion-item">
             <h2 class="accordion-header">

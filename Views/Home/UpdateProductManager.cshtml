@@ -1,0 +1,22 @@
+﻿@model TBLMenu
+
+<form method="post" autocomplete="off">
+
+    <div class="mb-3">
+        <input type="hidden" name="MenuId" value="@Model.MenuId" />
+        <label for="FoodName" class="form-label">FoodName</label>
+        <input type="text" class="form-control" id="FoodName" name="FoodName" aria-describedby="emailHelp" value="@Model.FoodName">
+    </div>
+
+    <div class="mb-3">
+        <label for="FoodPrice" class="form-label">FoodPrice</label>
+        <input type="text" class="form-control" id="FoodPrice" name="FoodPrice" aria-describedby="emailHelp" value="@Model.FoodPrice">
+    </div>
+
+    <div class="mb-3">
+        <label for="FoodImageUrl" class="form-label">FoodImageUrl</label>
+        <input type="text" class="form-control" id="FoodImageUrl" name="FoodImageUrl" aria-describedby="emailHelp" value="@Model.FoodImageUrl">
+    </div>
+   
+    <button type="submit" class="btn btn-success">Güncelle</button>
+</form>
