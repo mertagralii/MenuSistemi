@@ -12,7 +12,7 @@ namespace MenuSistemi.Controllers
 
         public HomeController(IDbConnection connection)
         {
-                _connection = connection;
+            _connection = connection;
         }
         public IActionResult Index(int? Id)
         {
@@ -20,7 +20,7 @@ namespace MenuSistemi.Controllers
             var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
             var categorySum = _connection.Query<CategoryMenuCount>
                                                                 (
-                                                                 @"SELECT TBLMenu.CategoryId,TBLCategory.CategoryName,COUNT(TBLMenu.Id) AS MenuSayisi
+                                                                 @"SELECT TBLMenu.CategoryId,TBLCategory.CategoryName,COUNT(TBLMenu.MenuId) AS MenuSayisi
                                                                   FROM TBLMenu
                                                                   LEFT JOIN TBLCategory
                                                                   ON 
@@ -29,17 +29,17 @@ namespace MenuSistemi.Controllers
                                                                  ).ToList();
             var viewModel = new MenuWithCategory()
             {
-                
+
                 Category = categoryList,
                 MenuLeftJoin = menuLeftJoin,
                 MenuCount = categorySum
-                
-            }; 
+
+            };
 
             return View(viewModel);
         }
 
-        public IActionResult Editor(int? Id) 
+        public IActionResult Editor(int? Id)
         {
             var categoryList = _connection.Query<TBLCategory>("SELECT * FROM TBLCategory").ToList();
             var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
@@ -56,7 +56,7 @@ namespace MenuSistemi.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddCategory(TBLCategory category) 
+        public IActionResult AddCategory(TBLCategory category)
         {
             var addCategory = _connection.Execute
                 (
@@ -69,7 +69,7 @@ namespace MenuSistemi.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateCategory(TBLCategory category) 
+        public IActionResult UpdateCategory(TBLCategory category)
         {
             var updateCategory = _connection.Execute
                                                     (
@@ -77,24 +77,47 @@ namespace MenuSistemi.Controllers
                                                         SET
                                                         CategoryName = @CategoryName
                                                         WHERE
-                                                        Id=@Id",category
+                                                        Id=@Id", category
                                                     );
 
             return RedirectToAction("Editor");
         }
 
-        public IActionResult DeleteCategory(int Id) 
+        public IActionResult DeleteCategory(int Id)
         {
-            var deleteCategory = _connection.Execute("DELETE FROM TBLCategory WHERE Id=@Id", new {Id});
-            return RedirectToAction("Editor"); 
+            var deleteCategory = _connection.Execute("DELETE FROM TBLCategory WHERE Id=@Id", new { Id });
+            return RedirectToAction("Editor");
         }
 
         public IActionResult ProductManager(int Id)
         {
-            var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id WHERE CategoryId = @CategoryId", new { CategoryId = Id } ).ToList();
-            var baslikYazisi = _connection.QueryFirstOrDefault<TBLCategory>("SELECT CategoryName From TBLCategory Where Id = @Id", new {Id});
+            var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id WHERE CategoryId = @CategoryId", new {CategoryId = Id }).ToList();
+            var baslikYazisi = _connection.QueryFirst<TBLCategory>("SELECT CategoryName From TBLCategory Where Id = @Id", new { Id });
+            var categoryId = _connection.QueryFirst<TBLCategory>("SELECT Id FROM TBLCategory WHERE Id = @Id", new { Id });
+            ViewBag.CategoryId = categoryId.Id;
             ViewBag.Baslik = baslikYazisi.CategoryName;
             return View(menuLeftJoin);
+        }
+
+        [HttpPost]
+        public IActionResult AddProductManager(TBLMenu menu)
+        {
+            var addProduct = _connection.Execute
+                                               (
+                                                @"INSERT INTO TBLMenu
+                                                  (CategoryId,FoodName,FoodPrice,FoodImageUrl,FoodDescription)
+                                                    VALUES
+                                                   (@CategoryId,@FoodName,@FoodPrice,@FoodImageUrl,@FoodDescription)", menu
+                                               );
+
+            return RedirectToAction("Index");
+             
+        }
+
+        public IActionResult DeleteProductManager(int Id) 
+        {
+            var deleteProduct = _connection.Execute("DELETE FROM TBLMenu Where MenuId = @MenuId", new { MenuId = Id }); 
+            return RedirectToAction("Index"); 
         }
 
 

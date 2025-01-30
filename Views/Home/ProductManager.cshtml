@@ -1,6 +1,47 @@
 ﻿@model List<MenuLeftJoinCategory>
-
+@{
+    
+}
 	<h1>@ViewBag.Baslik Ürünleri Yönetimi</h1>
+
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item ">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ÜrünEkle" aria-expanded="true" aria-controls="ÜrünEkle">
+               @ViewBag.Baslik Kategorisine Ürün Ekle
+            </button>
+        </h2>
+
+        <div id="ÜrünEkle" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+
+            <div class="accordion-body">
+                <form action="/home/AddProductManager" method="post" autocomplete="off">
+                    <div class="mb-3">
+                        <input type="hidden" name="CategoryId" value="@ViewBag.CategoryId" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="FoodName" class="form-label">Ürün Adı</label>
+                        <input type="text" class="form-control" id="FoodName" name="FoodName" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="FoodPrice" class="form-label">Ürünün Fiyatı</label>
+                        <input type="text" class="form-control" id="FoodPrice" name="FoodPrice" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="FoodImageUrl" class="form-label">Ürünün Resmi</label>
+                        <input type="text" class="form-control" id="FoodImageUrl" name="FoodImageUrl" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="FoodDescriptions" class="form-label">Ürünün Detayı</label>
+                        <input type="text" class="form-control" id="FoodDescription" name="FoodDescription" aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ürünü Ekle</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <table class="table">
     <thead>
@@ -19,10 +60,10 @@
                 <th scope="row">@test.FoodName</th>
                 <td>@test.FoodDescription</td>
                 <td>@test.FoodPrice TL</td>
-                <td><img src="@test.FoodImageUrl" width="200px" alt="Alternate Text" /></td>
+                <td><img src="@test.FoodImageUrl" style="width: 200px;" alt="Alternate Text" /></td>
                 <td>
-                    <a href="#" class="btn btn-success">Güncelle</a>
-                    <a href="#" class="btn btn-danger">Sil</a>
+                    <a href="/Home/ProductManagerUpdate/@test.MenuId" class="btn btn-success">Güncelle</a> <!--şu CategoryID'ye ait olana güncelleme yap-->
+                    <a href="/Home/DeleteProductManager/@test.MenuId" class="btn btn-danger">Sil</a> <!--Şu CategoryId'ye ait olana silme işlemi yap-->
                 </td>
             </tr>
 
