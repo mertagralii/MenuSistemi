@@ -1,4 +1,6 @@
-## AcunMedya Akademi'de Back-End Temel Eğitim Alırken Yapmış Olduğum Projem  
+## AcunMedya Akademi'de Back-End Temel Eğitim Menu Projem
+
+AcunMedya Akademi'de Back-End Temel Eğitim Alırken Yapmış Olduğum Projem  
 
 Projeyi çalıştırabilmeniz için veritabanınıza eklemeniz gereken SQL scripti:  
 
