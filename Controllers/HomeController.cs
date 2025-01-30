@@ -50,6 +50,7 @@ namespace MenuSistemi.Controllers
                 MenuLeftJoin = menuLeftJoin
 
             };
+            
 
             ViewBag.Id = Id;
             return View(viewModel);
@@ -65,6 +66,7 @@ namespace MenuSistemi.Controllers
                     VALUES
                     (@CategoryName)", category
                 );
+            TempData["AddCategory"] = " Category Ekleme Ýþlemi Baþarýyla iþlemi tamamlandý.";
             return RedirectToAction("Editor");
         }
 
@@ -79,13 +81,14 @@ namespace MenuSistemi.Controllers
                                                         WHERE
                                                         Id=@Id", category
                                                     );
-
+            TempData["UpgradeCategory"] = " Category Güncelleme Ýþlemi Baþarýyla iþlemi tamamlandý.";
             return RedirectToAction("Editor");
         }
 
         public IActionResult DeleteCategory(int Id)
         {
             var deleteCategory = _connection.Execute("DELETE FROM TBLCategory WHERE Id=@Id", new { Id });
+            TempData["DeleteCategory"] = " Category Silme Ýþlemi Baþarýyla iþlemi tamamlandý.";
             return RedirectToAction("Editor");
         }
 
@@ -110,13 +113,16 @@ namespace MenuSistemi.Controllers
                                                    (@CategoryId,@FoodName,@FoodPrice,@FoodImageUrl,@FoodDescription)", menu
                                                );
 
+            TempData["AddProductManager"] = " Ürün Ekleme Ýþlemi Baþarýyla iþlemi tamamlandý.";
+
             return RedirectToAction("Index");
              
         }
 
         public IActionResult DeleteProductManager(int Id) 
         {
-            var deleteProduct = _connection.Execute("DELETE FROM TBLMenu Where MenuId = @MenuId", new { MenuId = Id }); 
+            var deleteProduct = _connection.Execute("DELETE FROM TBLMenu Where MenuId = @MenuId", new { MenuId = Id });
+            TempData["DeleteProductManager"] = " Ürün Silme Ýþlemi Baþarýyla iþlemi tamamlandý.";
             return RedirectToAction("Index"); 
         }
 
@@ -124,7 +130,7 @@ namespace MenuSistemi.Controllers
         public IActionResult UpdateProductManager(int Id) 
         {
             var selectUpdateProduct = _connection.QueryFirstOrDefault<TBLMenu>("SELECT * FROM TBLMenu WHERE MenuId = @Id", new {Id = Id});
-
+            
             return View(selectUpdateProduct);
         }
 
@@ -138,7 +144,8 @@ namespace MenuSistemi.Controllers
                   FoodName = @FoodName,FoodPrice = @FoodPrice,FoodImageUrl = @FoodImageUrl
                   WHERE MenuId = @MenuId", menu
              );
-            return RedirectToAction("Editor");
+            TempData["UpdateProductManager"] = " Ürün Güncelleme Ýþlemi Baþarýyla iþlemi tamamlandý.";
+            return RedirectToAction("Index");
         }
 
 

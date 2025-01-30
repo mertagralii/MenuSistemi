@@ -1,6 +1,31 @@
 ﻿@model MenuWithCategory
 @{
     ViewData["Title"] = "Home Page";
+
+    var addCategoryMessage = TempData["AddCategory"];
+    var upgradeCategoryMessage = TempData["UpgradeCategory"];
+    var deleteCategoryMessage = TempData["DeleteCategory"];
+}
+@if (TempData["AddCategory"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Kategori Ekleme</strong> @addCategoryMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["UpgradeCategory"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong>Kategori Güncelleme</strong> @upgradeCategoryMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["DeleteCategory"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Kategori Silme</strong> @deleteCategoryMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
 
