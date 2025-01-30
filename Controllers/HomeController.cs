@@ -30,7 +30,7 @@ namespace MenuSistemi.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Editor() 
+        public IActionResult Editor(int? Id) 
         {
             var categoryList = _connection.Query<TBLCategory>("SELECT * FROM TBLCategory").ToList();
             var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
@@ -41,6 +41,8 @@ namespace MenuSistemi.Controllers
                 MenuLeftJoin = menuLeftJoin
 
             };
+
+            ViewBag.Id = Id;
             return View(viewModel);
         }
 
@@ -55,6 +57,27 @@ namespace MenuSistemi.Controllers
                     (@CategoryName)", category
                 );
             return RedirectToAction("Editor");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCategory(TBLCategory category) 
+        {
+            var updateCategory = _connection.Execute
+                                                    (
+                                                      @"UPDATE  TBLCategory
+                                                        SET
+                                                        CategoryName = @CategoryName
+                                                        WHERE
+                                                        Id=@Id",category
+                                                    );
+
+            return RedirectToAction("Editor");
+        }
+
+        public IActionResult DeleteCategory(int Id) 
+        {
+            var deleteCategory = _connection.Execute("DELETE FROM TBLCategory WHERE Id=@Id", new {Id});
+            return RedirectToAction("Editor"); 
         }
 
 

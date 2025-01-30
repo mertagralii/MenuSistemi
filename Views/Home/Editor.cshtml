@@ -14,7 +14,7 @@
                Kategori Ekle
             </button>
         </h2>
-        <div id="CategoryEkle" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div id="CategoryEkle" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <form action="/Home/AddCategory" method="post" autocomplete="off">
                     <div class="mb-3">
@@ -35,16 +35,33 @@
         @foreach (var category in Model.Category)
         {
         <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-@category.CategoryName" aria-expanded="false" aria-controls="flush-@category.CategoryName">
-                    @category.CategoryName
-                </button>
-            </h2>
+            @if (category.Id == ViewBag.Id)
+            {
+                <form action="/home/UpdateCategory" method="post" autocomplete="off" class="flex-grow-1">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                           
+                            <input type="hidden" name="Id" value="@category.Id" />
+                        </div>
+                        <input required type="text" class="form-control" name="CategoryName" value="@category.CategoryName">
+                        <button class="btn btn-success"><i class="bi bi-floppy"></i></button>
+                        <a class="btn btn-outline-secondary" href="/Home/Editor"><i class="bi bi-x-lg"></i></a>
+                    </div>
+                </form>
+            }else
+            {
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-@category.CategoryName" aria-expanded="false" aria-controls="flush-@category.CategoryName">
+                        @category.CategoryName
+                    </button>
+                </h2>
+            }
+           
             <div id="flush-@category.CategoryName" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <a href="/Admin/UpdateCategory/@category.Id" class="btn btn-primary">Güncelle</a>
-                    <a href="/Admin/DeleteCategory/@category.Id" class="btn btn-danger">Sil</a>
-                    <a href="/Admin/ProductmManage/@category.Id" class="btn btn-warning">Ürünleri Yönet</a>
+                    <a href="/Home/Editor/@category.Id" class="btn btn-primary">Güncelle</a>
+                    <a href="/Home/DeleteCategory/@category.Id" class="btn btn-danger">Sil</a>
+                    <a href="/Home/ProductmManage/@category.Id" class="btn btn-warning">Ürünleri Yönet</a>
                 </div>
             </div>
         </div>
