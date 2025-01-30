@@ -5,16 +5,19 @@
 
 
     <h1>Menü Listesi</h1>
-   
+ 
 
 
 <div class="accordion mt-5" id="accordionExample">
+    
     @foreach (var category in Model.Category)
     {
+        var menuCount = Model.MenuCount.FirstOrDefault(m => m.CategoryId == category.Id)?.MenuSayisi ?? 0; // SORULUCAK (HER CATEGORİYE AİT MENÜ SAYISI GETİRİYOR)
+
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@category.CategoryName" aria-expanded="false" aria-controls="@category.CategoryName">
-                    @category.CategoryName
+                    @category.CategoryName (@menuCount) <!--Menu Sayisini Getiriyor-->
                 </button>
             </h2>
             <div id="@category.CategoryName" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
@@ -22,7 +25,7 @@
                 <table class="table">
     
                     <tbody>
-                        @foreach (var menu in Model.MenuLeftJoin.Where(m => m.CategoryId.ToString() == category.Id.ToString())) //  Filtreleme İşlemi
+                        @foreach (var menu in Model.MenuLeftJoin.Where(m => m.CategoryId.ToString() == category.Id.ToString())) //SORULACAK (Filtreleme İşlemi Yapıyor)
                         {
                             <tr>
                                 <th scope="row"><img src="@menu.FoodImageUrl" style="width :100px" class="img-thumbnail" alt="..."></th>
@@ -34,10 +37,6 @@
                     </tbody>
 
                 </table>
-
-
-              
-               
             </div>
         </div>
     }

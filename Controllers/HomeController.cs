@@ -18,12 +18,21 @@ namespace MenuSistemi.Controllers
         {
             var categoryList = _connection.Query<TBLCategory>("SELECT * FROM TBLCategory").ToList();
             var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id").ToList();
-            // var urunSayisi = 
+            var categorySum = _connection.Query<CategoryMenuCount>
+                                                                (
+                                                                 @"SELECT TBLMenu.CategoryId,TBLCategory.CategoryName,COUNT(TBLMenu.Id) AS MenuSayisi
+                                                                  FROM TBLMenu
+                                                                  LEFT JOIN TBLCategory
+                                                                  ON 
+                                                                  TBLMenu.CategoryId = TBLCategory.Id
+                                                                  GROUP BY TBLMenu.CategoryId, TBLCategory.CategoryName;"
+                                                                 ).ToList();
             var viewModel = new MenuWithCategory()
             {
                 
                 Category = categoryList,
-                MenuLeftJoin = menuLeftJoin
+                MenuLeftJoin = menuLeftJoin,
+                MenuCount = categorySum
                 
             }; 
 
@@ -78,6 +87,14 @@ namespace MenuSistemi.Controllers
         {
             var deleteCategory = _connection.Execute("DELETE FROM TBLCategory WHERE Id=@Id", new {Id});
             return RedirectToAction("Editor"); 
+        }
+
+        public IActionResult ProductManager(int Id)
+        {
+            var menuLeftJoin = _connection.Query<MenuLeftJoinCategory>("SELECT * FROM TBLMenu LEFT JOIN TBLCategory ON TBLMenu.CategoryId = TBLCategory.Id WHERE CategoryId = @CategoryId", new { CategoryId = Id } ).ToList();
+            var baslikYazisi = _connection.QueryFirstOrDefault<TBLCategory>("SELECT CategoryName From TBLCategory Where Id = @Id", new {Id});
+            ViewBag.Baslik = baslikYazisi.CategoryName;
+            return View(menuLeftJoin);
         }
 
 

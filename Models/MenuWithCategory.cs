@@ -8,6 +8,8 @@
 
         public List<MenuLeftJoinCategory> MenuLeftJoin { get; set; }
 
+        public List<CategoryMenuCount> MenuCount { get; set; }
+
 
     }
 }

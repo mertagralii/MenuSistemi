@@ -12,6 +12,8 @@
 
         public string FoodImageUrl { get; set; }
 
+        public string FoodDescription { get; set; }
+
         public TBLCategory Category { get; set; }
     }
 }

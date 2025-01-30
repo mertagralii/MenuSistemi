@@ -13,5 +13,9 @@
 
         public int Id { get; set; }
         public string CategoryName { get; set; }
+
+        public string FoodDescription { get; set; }
+
+        public int CategorySum { get; set; }
     }
 }
